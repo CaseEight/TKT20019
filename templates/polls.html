@@ -1,0 +1,13 @@
+<a href="/">Palaa alkuun</a>
+<hr>
+<a href="/haku">Siirry hakuun</a>
+<hr>
+<a href="/new">Uusi kysely</a>
+<hr>
+{% for poll in polls %}
+Aihe: {{ poll.topic }} <br>
+Luotu: {{ poll.created_at.strftime("%Y-%m-%d %H:%M:%S") }} <br>
+<a href="/poll/{{ poll.id }}">Mene kyselyyn</a> |
+<a href="/result/{{ poll.id }}">Näytä tulokset</a> <br>
+<hr>
+{% endfor %}
