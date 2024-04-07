@@ -1,15 +1,28 @@
-CREATE TABLE polls (
+CREATE TABLE elokuvat (
     id SERIAL PRIMARY KEY,
-    topic TEXT,
+    nimi TEXT,
+    kuvaus TEXT,
+    kesto TEXT,
+    genre TEXT,
+    ohjaaja TEXT,
+    kasikirjoittaja TEXT,
     created_at TIMESTAMP
 );
+
 CREATE TABLE choices (
     id SERIAL PRIMARY KEY,
-    poll_id INTEGER REFERENCES polls,
+    elokuvat_id INTEGER REFERENCES elokuvat,
     choice TEXT
 );
+
 CREATE TABLE answers (
     id SERIAL PRIMARY KEY,
     choice_id INTEGER REFERENCES choices,
     sent_at TIMESTAMP
+);
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY, 
+    username TEXT, 
+    password TEXT
 );

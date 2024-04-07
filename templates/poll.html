@@ -1,12 +1,23 @@
-{{ topic }}
+{{ nimi }}
 <hr>
 <form action="/answer" method="POST">
 {% for choice in choices %}
 <input type="radio" name="answer" value="{{ choice.id }}"> {{ choice.choice }} <br>
 {% endfor %}
+
+<label class="rating-label"><strong>Arvosana:</strong>
+    <input
+      class="rating rating--nojs"
+      max="10"
+      step="1"
+      type="range"
+      value="3">
+</label>
+
+
 <p>
 <input type="submit" value="Lähetä">
 <input type="hidden" name="id" value="{{ id }}">
 </form>
 <hr>
-<a href="/">Takaisin</a>
+<a href="/elokuvat">Takaisin</a>

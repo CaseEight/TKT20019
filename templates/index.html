@@ -1,13 +1,14 @@
 {% if session.username %}
 <p>Olet kirjautunut nimellä {{ session.username }}</p>
 <a href="/logout">Kirjaudu ulos</a>
-
 <hr>
-<a href="/polls">Siirry kyselyihin</a>
+<a href="/elokuvat">Siirry kyselyihin</a>
 <hr>
-
+<a href="/admin">Luo uusi tunnus</a>
+<hr>
 
 {% else %}
+<b>Elokuvasovellus<br>
 <form action="/login" method="POST">
 <p>Tunnus:<br>
 <input type="text" name="username"></p>
