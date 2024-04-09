@@ -12,10 +12,25 @@ Sovelluksessa näkyy elokuvia, joista voi etsiä tietoa ja lukea arvioita. Jokai
 8. Ylläpitäjä voi luoda ryhmiä, joihin elokuvia voi luokitella. Elokuva voi kuulua yhteen tai useampaan ryhmään.
 
 Tilanne 7.4.2024
-        Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
-                Tarkoitus vielä rajoittaa että vain admin-tunnuksella voi luoda uusia tunnuksia.
-                /admin sivulla voi käydä luomassa itselleen tunnukset, kun niitä ei vielä aluksi ole.
+Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
+Tarkoitus vielä rajoittaa että vain admin-tunnuksella voi luoda uusia tunnuksia.
+/admin sivulla voi käydä luomassa itselleen tunnukset, kun niitä ei vielä aluksi ole.
 
-        Sovelluksen pohjana on pitkälti käytetty kurssilla esimerkkinä käytettyä kyselysovellusta, ja tämä näkyy vielä räikeästi koodissa, html-sivuissa, taulukoissa jne.
+Sovelluksen pohjana on pitkälti käytetty kurssilla esimerkkinä käytettyä kyselysovellusta, ja tämä näkyy vielä räikeästi koodissa, html-sivuissa, taulukoissa jne.
 
-        Elokuvia pystyy syöttämään ja antamaan näille tietoja. Näistä muodostuu listaa. Muuten suunnitellut ominaisuudet vielä toteuttamatta tai alkutekijöissä.
+Elokuvia pystyy syöttämään ja antamaan näille tietoja. Näistä muodostuu listaa. Muuten suunnitellut ominaisuudet vielä toteuttamatta tai alkutekijöissä.
+
+Käynnistysohjeet:
+
+Lataa repositorio ja siirry sen juurikansioon. Luo kansioon .env-tiedosto (uusi tyhjä tiedosto ja nimeksi vain .env) ja määritä siihen:
+DATABASE_URL= (todennäköisesti muotoa postgresql:///käyttäjänimesi)
+SECRET_KEY= 
+
+Ohjelman saat käyntiin näillä komennoilla
+
+cd kansionmissäsijaitsee
+python3 -m venv venv
+source venv/bin/activate
+pip install -r ./requirements.txt
+psql < schema.sql
+flask run
