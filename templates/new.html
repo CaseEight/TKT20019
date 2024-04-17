@@ -1,3 +1,7 @@
+{% extends "layout.html" %}
+{% block content %}
+{% if session.username %}
+
 <form action="/create" method="POST">
 <p>Elokuva:<br>
 <input type="text" name="nimi"></p>
@@ -11,14 +15,12 @@
 <input type="text" name="ohjaaja"></p>
 <p>Käsikirjoittaja:<br>
 <input type="text" name="kasikirjoittaja"></p>
-<hr>
-<p>Vaihtoehto 1:<br>
-<input type="text" name="choice"></p>
-<p>Vaihtoehto 2:<br>
-<input type="text" name="choice"></p>
-<p>Vaihtoehto 3:<br>
-<input type="text" name="choice"></p>
-<p>Vaihtoehto 4:<br>
-<input type="text" name="choice"></p>
 <input type="submit" value="Luo kysely">
 </form>
+
+{% else %}
+<p>Et ole kirjautunut sisään.</p>
+<a href="/">Palaa kirjautumiseen</a> |
+{% endif %}
+
+{% endblock %}

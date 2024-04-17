@@ -1,14 +1,16 @@
+{% extends "layout.html" %}
+{% block title %}Etusivu{% endblock %}
+{% block content %}
+
 {% if session.username %}
 <p>Olet kirjautunut nimellä {{ session.username }}</p>
 <a href="/logout">Kirjaudu ulos</a>
 <hr>
-<a href="/elokuvat">Siirry kyselyihin</a>
-<hr>
-<a href="/admin">Luo uusi tunnus</a>
-<hr>
+
+
 
 {% else %}
-<b>Elokuvasovellus<br>
+<p>Et ole kirjautunut sisään.</p>
 <form action="/login" method="POST">
 <p>Tunnus:<br>
 <input type="text" name="username"></p>
@@ -17,3 +19,4 @@
 <input type="submit" value="Kirjaudu">
 </form>
 {% endif %}
+{% endblock %}

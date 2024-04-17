@@ -1,9 +1,30 @@
-{{ nimi }}
+{% extends "layout.html" %}
+{% block content %}
+{% if session.username %}
+
+Nimi: {{ nimi }} <br>
+Kuvaus: {{ kuvaus }} <br>
+Kesto: {{ kesto }} <br>
+Genre: {{ genre }} <br>
+Ohjaaja: {{ ohjaaja }} <br>
+Käskirjoittaja: {{ kasikirjoittaja }} <br>
+Keskiarvosana: {{average}} <br>
 <hr>
-<ul>
-{% for choice in choices %}
-<li> {{ choice.choice }}: {{ choice.count }} kpl
+{% for rating in ratings %}
+<i>Arvosana:</i> {{ rating.rating }}
+<p>
+<i>Arvostelu:</i> {{ rating.message }}
+<p>
+<hr>
 {% endfor %}
+
 </ul>
 <hr>
 <a href="/elokuvat">Takaisin</a>
+
+{% else %}
+<p>Et ole kirjautunut sisään.</p>
+<a href="/">Palaa kirjautumiseen</a> |
+{% endif %}
+
+{% endblock %}

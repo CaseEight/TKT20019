@@ -15,6 +15,14 @@ CREATE TABLE choices (
     choice TEXT
 );
 
+CREATE TABLE ratings (
+    id SERIAL PRIMARY KEY,
+    elokuvat_id INTEGER REFERENCES elokuvat,
+    rating INTEGER,
+    message TEXT,
+    sent_at TIMESTAMP
+);
+
 CREATE TABLE answers (
     id SERIAL PRIMARY KEY,
     choice_id INTEGER REFERENCES choices,
@@ -23,6 +31,6 @@ CREATE TABLE answers (
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY, 
-    username TEXT, 
+    username TEXT UNIQUE, 
     password TEXT
 );

@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+{% if session.username %}
+
+
+<form action="/delete" method="post">
+
+<p>Minkä elokuvan haluat poistaa?</p>
+
+{% for film in list %}
+<input type="radio" name="film" value="{{ film.id }}"> {{ film.nimi }} <br>
+{% endfor %}
+
+<p>
+<input type="submit" value="Poista">
+</form>
+
+<p>
+<a href="/">Palaa takaisin</a>
+
+{% else %}
+<p>Et ole kirjautunut sisään.</p>
+<a href="/">Palaa kirjautumiseen</a> |
+{% endif %}
+
+{% endblock %}

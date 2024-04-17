@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<hr>
+<ul>
+<b>Hakutulokset (kaikista kentistä):</b>
+{% for elokuva in elokuvat %}
+<li>Elokuvan nimi: {{ elokuva.nimi }}</li>
+<li>Kuvaus: {{ elokuva.kuvaus }}</li>
+<li>Kesto: {{ elokuva.kesto }}</li>
+<li>Genre: {{ elokuva.genre }}</li>
+<li>Ohjaaja: {{ elokuva.ohjaaja }}</li>
+<li>Käsikirjoittaja:{{ elokuva.kasikirjoittaja }}</li>
+<hr>
+{% endfor %}
+
+{% endblock %}

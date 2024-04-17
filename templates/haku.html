@@ -1,7 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+{% if session.username %}
+
 <title>Haku</title>
-<form action="/haku" method="GET">
+<form action="/hakutulos" method="GET">
 Hakusana: <input type="text" name="query">
 <br>
 <input type="submit" value="Lähetä">
 </form>
-    
+
+{% else %}
+<p>Et ole kirjautunut sisään.</p>
+<a href="/">Palaa kirjautumiseen</a> |
+{% endif %}
+
+{% endblock %}

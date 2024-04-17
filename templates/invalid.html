@@ -1,3 +1,8 @@
-<i>Väärä tunnus tai salasana!</i>
+{% extends "layout.html" %}
+{% block content %}
+
+<i> Virhe: {{ message }} </i>
 <br>
-<a href="/">palaa kirjautumissivulle</a>
+<a href="/">Palaa kirjautumissivulle</a>
+
+{% endblock %}
