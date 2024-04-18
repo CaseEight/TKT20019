@@ -3,13 +3,18 @@
 
 <title>Uuden tunnuksen luonti</title>
 <h1>Uuden tunnuksen luonti</h1>
-<form action="/lisaa_kayttaja" method="POST">
+<form action="/new_user" method="POST">
 <p>Tunnus:<br>
 <input type="text" name="username"></p>
 <p>Salasana:<br>
 <input type="password" name="password1"></p>
 <p>Anna salasana uudestaan:<br>
 <input type="password" name="password2"></p>
+<p>Ylläpitäjä?<br>
+<input type="radio" id="yes" name="isadmin" value="True">
+<label for="yes">Kyllä</label><br>
+<input type="radio" id="no" name="isadmin" value="False">
+<label for="no">Ei</label><br></p>
 <input type="submit" value="Lisää">
 </form>
 

@@ -9,15 +9,9 @@ CREATE TABLE elokuvat (
     created_at TIMESTAMP
 );
 
-CREATE TABLE choices (
-    id SERIAL PRIMARY KEY,
-    elokuvat_id INTEGER REFERENCES elokuvat,
-    choice TEXT
-);
-
 CREATE TABLE ratings (
     id SERIAL PRIMARY KEY,
-    elokuvat_id INTEGER REFERENCES elokuvat,
+    elokuvat_id INTEGER REFERENCES elokuvat ON DELETE CASCADE,
     rating INTEGER,
     message TEXT,
     sent_at TIMESTAMP
@@ -32,5 +26,6 @@ CREATE TABLE answers (
 CREATE TABLE users (
     id SERIAL PRIMARY KEY, 
     username TEXT UNIQUE, 
-    password TEXT
+    password TEXT,
+    isAdmin BOOLEAN
 );

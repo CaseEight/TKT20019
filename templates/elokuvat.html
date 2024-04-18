@@ -8,7 +8,8 @@
 Elokuva: {{ poll.nimi }} <br>
 Keskiarvosana: {{ poll.average}} <br>
 <a href="/poll/{{ poll.id }}">Anna arvio</a> |
-<a href="/result/{{ poll.id }}">Tarkastele tietoja</a> <br>
+<a href="/result/{{ poll.id }}">Tarkastele tietoja</a> |
+<a href="/edit/{{ poll.id }}">Muokkaa tietoja</a> <br>
 <hr>
 {% endfor %}
 

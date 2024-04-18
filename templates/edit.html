@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1>Muokkaa elokuvaa</h1>
+
+<form method="POST" action="/edit/{{ film_id }}"> 
+    <label for="nimi">Nimi:</label><br>
+    <input type="text" id="nimi" name="nimi" value="{{ film.nimi }}"><br>
+    
+    <label for="Kuvaus">Kuvaus:</label><br>
+    <textarea id="kuvaus" name="kuvaus">{{ film.kuvaus }}</textarea><br>
+    
+    <label for="kesto">Kesto:</label><br>
+    <input type="text" id="kesto" name="kesto" value="{{ film.kesto }}"><br>
+    
+    <label for="genre">Genre:</label><br>
+    <input type="text" id="genre" name="genre" value="{{ film.genre }}"><br>
+    
+    <label for="ohjaaja">Ohjaaja:</label><br>
+    <input type="text" id="ohjaaja" name="ohjaaja" value="{{ film.ohjaaja }}"><br>
+
+    <label for="kasikirjoittaja">Käskirjoittaja:</label><br>
+    <input type="text" id="kasikirjoittaja" name="kasikirjoittaja" value="{{ film.kasikirjoittaja }}"><br>
+
+    <input type="submit" value="Tallenna muutokset">
+</form>
+
+{% endblock %}
