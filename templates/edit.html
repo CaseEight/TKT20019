@@ -1,28 +1,28 @@
 {% extends "layout.html" %}
 {% block content %}
-{% if session.username %}
+{% if session.user_id %}
 
 
 <h1>Muokkaa elokuvaa</h1>
 
 <form method="POST" action="/edit/{{ film_id }}"> 
-    <label for="nimi">Nimi:</label><br>
-    <input type="text" id="nimi" name="nimi" value="{{ film.nimi }}"><br>
+    <label for="title">Nimi:</label><br>
+    <input type="text" id="title" name="title" value="{{ film.title }}"><br>
     
-    <label for="Kuvaus">Kuvaus:</label><br>
-    <input type="text" id="kuvaus" name="kuvaus" value="{{ film.kuvaus }}"><br>
+    <label for="description">Kuvaus:</label><br>
+    <input type="text" id="description" name="description" value="{{ film.description }}"><br>
     
-    <label for="kesto">Kesto:</label><br>
-    <input type="text" id="kesto" name="kesto" value="{{ film.kesto }}"><br>
+    <label for="length">Kesto:</label><br>
+    <input type="text" id="length" name="length" value="{{ film.length }}"><br>
     
     <label for="genre">Genre:</label><br>
     <input type="text" id="genre" name="genre" value="{{ film.genre }}"><br>
     
-    <label for="ohjaaja">Ohjaaja:</label><br>
-    <input type="text" id="ohjaaja" name="ohjaaja" value="{{ film.ohjaaja }}"><br>
+    <label for="director">Ohjaaja:</label><br>
+    <input type="text" id="director" name="director" value="{{ film.director }}"><br>
 
-    <label for="kasikirjoittaja">Käskirjoittaja:</label><br>
-    <input type="text" id="kasikirjoittaja" name="kasikirjoittaja" value="{{ film.kasikirjoittaja }}"><br>
+    <label for="writer">Käskirjoittaja:</label><br>
+    <input type="text" id="writer" name="writer" value="{{ film.writer }}"><br>
     <br>
     <input type="submit" value="Tallenna muutokset">
 </form>

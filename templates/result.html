@@ -1,24 +1,24 @@
 {% extends "layout.html" %}
 {% block content %}
-{% if session.username %}
+{% if session.user_id %}
 
 {%if visible[1]%}
-    Nimi: {{ information.nimi }} <br>
+    Nimi: {{ information.title }} <br>
 {% endif %}
 {%if visible[2]%}
-    Kuvaus: {{ information.kuvaus }} <br>
+    Kuvaus: {{ information.description }} <br>
 {% endif %}
 {%if visible[3]%}
-    Kesto: {{ information.kesto }} <br>
+    Kesto: {{ information.length }} <br>
 {% endif %}
 {%if visible[4]%}
     Genre: {{ information.genre }} <br>
 {% endif %}
 {%if visible[5]%}
-    Ohjaaja: {{ information.ohjaaja }} <br>
+    Ohjaaja: {{ information.director }} <br>
 {% endif %}
 {%if visible[6]%}
-    Käskirjoittaja: {{ information.kasikirjoittaja }} <br>
+    Käskirjoittaja: {{ information.writer }} <br>
 {% endif %}
 Keskiarvosana: {{average}} <br>
 
@@ -31,7 +31,7 @@ Keskiarvosana: {{average}} <br>
 <form action="/delete_rating" method="post">
 <input type="submit" value="Poista arvostelu">
 <input type="hidden" name="id" value="{{ rating.id }}">
-<input type="hidden" name="elokuva_id" value="{{ rating.id }}">
+<input type="hidden" name="film_id" value="{{ rating.id }}">
 </form>
 <p>
 <hr>
@@ -39,7 +39,7 @@ Keskiarvosana: {{average}} <br>
 
 </ul>
 <hr>
-<a href="/elokuvat">Takaisin</a>
+<a href="/films">Takaisin</a>
 
 {% else %}
 <p>Et ole kirjautunut sisään.</p>

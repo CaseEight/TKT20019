@@ -3,43 +3,43 @@ from sqlalchemy.sql import text
 #import users
 
 def get_film_list():
-    sql = text("SELECT id, nimi, kuvaus FROM elokuvat ORDER BY nimi DESC")
+    sql = text("SELECT id, title, description FROM films ORDER BY title DESC")
     result = db.session.execute(sql)
     return result.fetchall()
 
 def get_film(film_id):
-    sql = text("SELECT * FROM elokuvat WHERE id=:film_id")
+    sql = text("SELECT * FROM films WHERE id=:film_id")
     result = db.session.execute(sql, {"film_id": film_id})
     film = result.fetchone()
     return film
 
-def delete_film(elokuva_id):
-    sql = text("DELETE FROM elokuvat WHERE id=:elokuva_id")
-    db.session.execute(sql, {"elokuva_id":elokuva_id})
+def delete_film(film_id):
+    sql = text("DELETE FROM films WHERE id=:film_id")
+    db.session.execute(sql, {"film_id":film_id})
     db.session.commit()
 
 def delete_rating(rating_id):
-    sql = text("SELECT elokuvat_id FROM ratings WHERE id=:rating_id")
+    sql = text("SELECT films_id FROM ratings WHERE id=:rating_id")
     result = db.session.execute(sql, {"rating_id":rating_id})
-    elokuva_id = result.fetchone()[0]
+    film_id = result.fetchone()[0]
     sql = text("DELETE FROM ratings WHERE id=:rating_id")
     db.session.execute(sql, {"rating_id":rating_id})
     db.session.commit()
-    return elokuva_id
+    return film_id
 
-def edit_film(elokuva_id, nimi, kuvaus, kesto, genre, ohjaaja, kasikirjoittaja):
+def edit_film(film_id, title, description, length, genre, director, writer):
     try:
-        sql = text("UPDATE elokuvat SET nimi = COALESCE(:nimi, nimi), kuvaus = COALESCE(:kuvaus, kuvaus), " \
-                "kesto = COALESCE(:kesto, kesto), genre = COALESCE(:genre, genre), " \
-                "ohjaaja = COALESCE(:ohjaaja, ohjaaja),kasikirjoittaja = COALESCE(:kasikirjoittaja, kasikirjoittaja) " \
-                    "WHERE id = :elokuva_id")
-        db.session.execute(sql, {"elokuva_id":elokuva_id,
-                                "nimi":nimi, 
-                                "kuvaus":kuvaus, 
-                                "kesto":kesto, 
+        sql = text("UPDATE films SET title = COALESCE(:title, title), description = COALESCE(:description, description), " \
+                "length = COALESCE(:length, length), genre = COALESCE(:genre, genre), " \
+                "director = COALESCE(:director, director),writer = COALESCE(:writer, writer) " \
+                    "WHERE id = :film_id")
+        db.session.execute(sql, {"film_id":film_id,
+                                "title":title, 
+                                "description":description, 
+                                "length":length, 
                                 "genre":genre, 
-                                "ohjaaja":ohjaaja, 
-                                "kasikirjoittaja":kasikirjoittaja
+                                "director":director, 
+                                "writer":writer
                                 })
         db.session.commit()
         return True
@@ -48,29 +48,29 @@ def edit_film(elokuva_id, nimi, kuvaus, kesto, genre, ohjaaja, kasikirjoittaja):
     
 def all_visible_film_info(film_id):
     truth = text("True")
-    sql = text("INSERT INTO film_visible (nimiVisible, kuvausVisible, kestoVisible, genreVisible, ohjaajaVisible, kasikirjoittajaVisible, created_atVisible, elokuvat_id) VALUES (TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, :elokuvat_id) RETURNING id")
-    db.session.execute(sql, {"nimiVisible":truth, "kuvausVisible":truth, "kestoVisible":truth, "genreVisible":truth, "ohjaajaVisible":truth, "kasikirjoittajaVisible":truth, "created_atVisible":truth, "elokuvat_id":film_id})
+    sql = text("INSERT INTO film_visible (titleVisible, descriptionVisible, lengthVisible, genreVisible, directorVisible, writerVisible, created_atVisible, films_id) VALUES (TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, :films_id) RETURNING id")
+    db.session.execute(sql, {"titleVisible":truth, "descriptionVisible":truth, "lengthVisible":truth, "genreVisible":truth, "directorVisible":truth, "writerVisible":truth, "created_atVisible":truth, "films_id":film_id})
     db.session.commit()
 
 def get_visible(film_id):
-    sql = text("SELECT * FROM film_visible WHERE elokuvat_id=:film_id")
+    sql = text("SELECT * FROM film_visible WHERE films_id=:film_id")
     result = db.session.execute(sql, {"film_id": film_id})
     film = result.fetchone()
     return film
 
 
-def visible_film_update(film_id, nimi, kuvaus, kesto, genre, ohjaaja, kasikirjoittaja):
-    sql = text("UPDATE film_visible SET nimiVisible = :nimi, kuvausVisible = :kuvaus, " \
-            "kestoVisible = :kesto, genreVisible = :genre, " \
-            "ohjaajaVisible = :ohjaaja, kasikirjoittajaVisible = :kasikirjoittaja " \
-            "FROM elokuvat WHERE elokuvat.id = film_visible.elokuvat_id "
-                "AND elokuvat.id = :film_id")
+def visible_film_update(film_id, title, description, length, genre, director, writer):
+    sql = text("UPDATE film_visible SET titleVisible = :title, descriptionVisible = :description, " \
+            "lengthVisible = :length, genreVisible = :genre, " \
+            "directorVisible = :director, writerVisible = :writer " \
+            "FROM films WHERE films.id = film_visible.films_id "
+                "AND films.id = :film_id")
     db.session.execute(sql, {"film_id":film_id,
-                            "nimi":nimi, 
-                            "kuvaus":kuvaus, 
-                            "kesto":kesto, 
+                            "title":title, 
+                            "description":description, 
+                            "length":length, 
                             "genre":genre, 
-                            "ohjaaja":ohjaaja, 
-                            "kasikirjoittaja":kasikirjoittaja
+                            "director":director, 
+                            "writer":writer
                             })
     db.session.commit()

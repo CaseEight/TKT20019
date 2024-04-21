@@ -1,30 +1,30 @@
-CREATE TABLE elokuvat (
+CREATE TABLE films (
     id SERIAL PRIMARY KEY,
-    nimi TEXT,
-    kuvaus TEXT,
-    kesto TEXT,
+    title TEXT,
+    description TEXT,
+    length TEXT,
     genre TEXT,
-    ohjaaja TEXT,
-    kasikirjoittaja TEXT,
+    director TEXT,
+    writer TEXT,
     created_at TIMESTAMP
 );
 
 CREATE TABLE film_visible (
     id SERIAL PRIMARY KEY,
-    nimiVisible BOOLEAN,
-    kuvausVisible BOOLEAN,
-    kestoVisible BOOLEAN,
+    titleVisible BOOLEAN,
+    descriptionVisible BOOLEAN,
+    lengthVisible BOOLEAN,
     genreVisible BOOLEAN,
-    ohjaajaVisible BOOLEAN,
-    kasikirjoittajaVisible BOOLEAN,
+    directorVisible BOOLEAN,
+    writerVisible BOOLEAN,
     created_atVisible BOOLEAN,
-    elokuvat_id INTEGER REFERENCES elokuvat ON DELETE CASCADE
+    films_id INTEGER REFERENCES films ON DELETE CASCADE
 );
 
 
 CREATE TABLE ratings (
     id SERIAL PRIMARY KEY,
-    elokuvat_id INTEGER REFERENCES elokuvat ON DELETE CASCADE,
+    films_id INTEGER REFERENCES films ON DELETE CASCADE,
     rating INTEGER,
     message TEXT,
     sent_at TIMESTAMP

@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-{% if session.username %}
+{% if session.user_id %}
 
 {{ nimi }}
 <hr>
@@ -14,7 +14,7 @@
   <input type="hidden" name="id" value="{{ id }}">
 </form>
 <hr>
-<a href="/elokuvat">Takaisin</a>
+<a href="/films">Takaisin</a>
 
 {% else %}
 <p>Et ole kirjautunut sisään.</p>

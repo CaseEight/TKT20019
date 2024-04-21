@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
 
-{% if session.username %}
+{% if session.user_id %}
 
 <hr>
-{% for poll in elokuvat %}
-Elokuva: {{ poll.nimi }} <br>
+{% for poll in films %}
+Elokuva: {{ poll.title }} <br>
 Keskiarvosana: {{ poll.average}} <br>
 <a href="/poll/{{ poll.id }}">Anna arvio</a> |
 <a href="/result/{{ poll.id }}">Tarkastele tietoja</a> |

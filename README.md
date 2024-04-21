@@ -20,6 +20,37 @@ Sovelluksen pohjana on pitkälti käytetty kurssilla esimerkkinä käytettyä ky
 
 Elokuvia pystyy syöttämään ja antamaan näille tietoja. Näistä muodostuu listaa. Muuten suunnitellut ominaisuudet vielä toteuttamatta tai alkutekijöissä.
 
+
+Tilanne 21.4.2024
+1. Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
+    Toteutettu
+2. Käyttäjä näkee elokuvat listana (tai tuotantomaan mukaan kartalla) ja voi painaa elokuvasta, jolloin siitä näytetään lisää tietoa (kuten kuvaus, kesto, genre, ohjaaja, käsikirjoittaja jne.).
+    Kartta vielä toteuttamatta
+3. Käyttäjä voi antaa arvion (tähdet ja kommentti) elokuvasta ja lukea muiden antamia arvioita.
+    Tähdet vielä toteuttamatta
+    Arviot eivät ole vielä järkevässä järjestyksessä ja niistä ei näe kuka on antanut arvion.
+    Käyttäjä voi antaa arvioita vielä rajattomasti / elokuva.
+4. Käyttäjä voi etsiä kaikki elokuvat, joiden kuvauksessa (tai metatiedoissa) on annettu sana.
+    Haku toimii, hakee kaikkien elokuvien kaikista tietokentistä
+5. Käyttäjä näkee myös listan, jossa elokuvat on järjestetty parhaimmasta huonoimpaan arvioiden mukaisesti.
+    Käyttäjälle näkyy oletuksena lista parhaimmasta huonoimpaan, arvioimattomat ensin.
+    Lisään mahd. vaihtoehdon järjestää lista aakkosten tai vuosiluvun(ei vielä metatiedoissa) tms. mukaan.
+6. Ylläpitäjä voi lisätä ja poistaa elokuvia sekä määrittää elokuvasta näytettävät tiedot.
+    Toteutettu
+7. Ylläpitäjä voi tarvittaessa poistaa käyttäjän antaman arvion.
+    Toteutettu
+8. Ylläpitäjä voi luoda ryhmiä, joihin elokuvia voi luokitella. Elokuva voi kuulua yhteen tai useampaan ryhmään.
+    Ryhmät viel toteuttamatta. Tämä vaatii yhden taulukon lisää.
+
+Keskeisiä muita korjauksia annettuihin kommentteihin nähden:
+
+Koodi korjattu englannin kiellelle kokonaan
+Jaettu yhdestä app.py useampaan tiedostoon
+Committeja tehty useammin
+Virheet näytetään samalla sivulla
+Navigointipalkki lisätty
+
+
 Käynnistysohjeet:
 
 Lataa repositorio ja siirry sen juurikansioon. Luo kansioon .env-tiedosto (uusi tyhjä tiedosto ja nimeksi vain .env) ja määritä siihen:

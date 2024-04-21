@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+{% if session.user_id %}
+
+<hr>
+<ul>
+<b>Hakutulokset (kaikista kentistä):</b>
+{% for film in films %}
+<li>Elokuvan nimi: {{ film.title }}</li>
+<li>Kuvaus: {{ film.description }}</li>
+<li>Kesto: {{ film.length }}</li>
+<li>Genre: {{ film.genre }}</li>
+<li>Ohjaaja: {{ film.director }}</li>
+<li>Käsikirjoittaja:{{ film.writer }}</li>
+<hr>
+{% endfor %}
+
+{% else %}
+<p>Et ole kirjautunut sisään.</p>
+<a href="/">Palaa kirjautumiseen</a> |
+{% endif %}
+
+
+
+{% endblock %}

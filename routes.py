@@ -9,6 +9,7 @@ from app import app
 from db import db
 import manager
 import users
+import secrets
 
 
 @app.route("/")
@@ -21,70 +22,43 @@ def admin():
 
 @app.route("/new_user", methods=["POST"])
 def new_user():
-    username = request.form["username"]
-    if len(username) < 1:
-        return render_template("invalid.html", message="Tunnuskenttä tyhjä")
-    elif len(username) > 16:
-        return render_template("invalid.html", message="Tunnuksessa voi olla korkeintaan 16 merkkiä")
-    password1 = request.form["password1"]
-    password2 = request.form["password2"]
-    if password1 != password2:
-        return render_template("invalid.html", message="Salasanat eroavat toisistaan")
-    if password1 == "" or password2 == "":
-        return render_template("invalid.html", message="Salasanakenttä on tyhjä")
-    hash_value = generate_password_hash(password1)
-    try:
-        isadmin = request.form["isadmin"]
-    except:
-        return render_template("invalid.html", message="Valitse käyttäjän tyyppi")
-    sql = text("INSERT INTO users (username, password, isadmin) VALUES (:username, :password, :isAdmin)")
-    db.session.execute(sql, {"username":username, "password":hash_value, "isAdmin":isadmin})
-    db.session.commit()
+    users.new_user()
     return render_template("index.html")
 
-
-
-@app.route("/login",methods=["POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    username = request.form["username"]
-    password = request.form["password"]
-    sql = text("SELECT id, password FROM users WHERE username=:username")
-    result = db.session.execute(sql, {"username":username})
-    user = result.fetchone()
-    if not user:
-        return render_template("invalid.html", message="Väärä tunnus tai salasana")
-    else:
-        hash_value = user.password
-        if check_password_hash(hash_value, password):
-            session["user_id"] = user.id
-            session["username"] = username
+    if request.method == "GET":
+        return render_template("login.html")
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        session["csrf_token"] = secrets.token_hex(16)
+        if users.login(username, password):
             return redirect("/")
         else:
-            return redirect("/invalid")
+            return render_template("invalid.html", message="Väärä tunnus tai salasana")
     
 @app.route("/logout")
 def logout():
-    del session["user_id"]
-    del session["username"]
+    users.logout()
     return redirect("/")
 
 @app.route("/invalid")
 def invalid():
     return render_template("invalid.html")
 
-
-@app.route("/elokuvat")
-def elokuvat():
+@app.route("/films")
+def films():
     try:
-        #sql = text("SELECT id, nimi, created_at FROM elokuvat ORDER BY id DESC")
-        sql = text("SELECT E.id, nimi, CAST(AVG((rating)) AS Decimal (10,2)) AS average " \
-            "FROM elokuvat E LEFT JOIN ratings R " \
-            "ON E.id = R.elokuvat_id " \
-            "GROUP By E.id, nimi " \
+        #sql = text("SELECT id, title, created_at FROM films ORDER BY id DESC")
+        sql = text("SELECT F.id, title, CAST(AVG((rating)) AS Decimal (10,2)) AS average " \
+            "FROM films F LEFT JOIN ratings R " \
+            "ON F.id = R.films_id " \
+            "GROUP By F.id, title " \
             "ORDER BY average DESC")
         result = db.session.execute(sql)
-        elokuvat = result.fetchall()
-        return render_template("elokuvat.html", elokuvat=elokuvat)
+        films = result.fetchall()
+        return render_template("films.html", films=films)
     except:
         return render_template("invalid.html", message="Ei näytettäviä elokuvia. Lisää elokuva yläreunan valikosta.")
 
@@ -97,26 +71,26 @@ def new():
 
 @app.route("/create", methods=["POST"])
 def create():
-    nimi = request.form["nimi"]
-    kuvaus = request.form["kuvaus"]
-    kesto = request.form["kesto"]
+    title = request.form["title"]
+    description = request.form["description"]
+    length = request.form["length"]
     genre = request.form["genre"]
-    ohjaaja = request.form["ohjaaja"]
-    kasikirjoittaja = request.form["kasikirjoittaja"]
-    sql = text("INSERT INTO elokuvat (nimi, kuvaus, kesto, genre, ohjaaja, kasikirjoittaja, created_at) VALUES (:nimi, :kuvaus, :kesto, :genre, :ohjaaja, :kasikirjoittaja, NOW()) RETURNING id")
-    db.session.execute(sql, {"nimi":nimi, 
-                            "kuvaus":kuvaus, 
-                            "kesto":kesto, 
+    director = request.form["director"]
+    writer = request.form["writer"]
+    sql = text("INSERT INTO films (title, description, length, genre, director, writer, created_at) VALUES (:title, :description, :length, :genre, :director, :writer, NOW()) RETURNING id")
+    db.session.execute(sql, {"title":title, 
+                            "description":description, 
+                            "length":length, 
                             "genre":genre, 
-                            "ohjaaja":ohjaaja, 
-                            "kasikirjoittaja":kasikirjoittaja
+                            "director":director, 
+                            "writer":writer
                             })
     db.session.commit()
-    sql = text("SELECT id FROM elokuvat WHERE nimi=:nimi")
-    result = db.session.execute(sql, {"nimi":nimi})
+    sql = text("SELECT id FROM films WHERE title=:title")
+    result = db.session.execute(sql, {"title":title})
     film_id = result.fetchone()[0]
     manager.all_visible_film_info(film_id)
-    return redirect("/elokuvat")
+    return redirect("/films")
 
 
 @app.route("/delete", methods=["GET", "POST"])
@@ -130,7 +104,7 @@ def delete_film_route():
             if "film" in request.form:
                 film = request.form["film"]
                 manager.delete_film(film)
-            return redirect("/elokuvat")
+            return redirect("/films")
     else:
         return render_template("/invalid.html", message="Ei oikeutta toimintoon")
 
@@ -139,8 +113,8 @@ def delete_film_route():
 def delete_rating_route():
     if users.is_admin():
         rating_id = request.form["id"]
-        elokuva_id = manager.delete_rating(rating_id)
-        return redirect("/result/" + str(elokuva_id))
+        film_id = manager.delete_rating(rating_id)
+        return redirect("/result/" + str(film_id))
     else:
         return render_template("/invalid.html", message="Ei oikeutta toimintoon")
 
@@ -150,18 +124,18 @@ def edit_film_route(film_id):
         film = manager.get_film(film_id) 
         return render_template("edit.html", film=film, film_id=film_id)
     elif request.method == "POST":
-        nimi = request.form.get("nimi")
-        kuvaus = request.form.get("kuvaus")
-        kesto = request.form.get("kesto")
+        title = request.form.get("title")
+        description = request.form.get("description")
+        length = request.form.get("length")
         genre = request.form.get("genre")
-        ohjaaja = request.form.get("ohjaaja")
-        kasikirjoittaja = request.form.get("kasikirjoittaja")
-        if manager.edit_film(film_id, nimi, kuvaus, kesto, genre, ohjaaja, kasikirjoittaja):
-            return redirect(url_for('elokuvat')) 
+        director = request.form.get("director")
+        writer = request.form.get("writer")
+        if manager.edit_film(film_id, title, description, length, genre, director, writer):
+            return redirect(url_for('films')) 
         else:
             flash("Muokkaus epäonnistui.", "error")
             return redirect(url_for('edit_film', film_id=film_id))
-    return render_template("elokuvat.html")
+    return render_template("films.html")
 
 @app.route("/visible/<int:film_id>", methods=["GET", "POST"])
 def visible(film_id):
@@ -170,19 +144,14 @@ def visible(film_id):
             film = manager.get_visible(film_id)
             return render_template("visible.html", film=film, film_id=film_id)
         elif request.method == "POST":
-            nimi = request.form["nimi"]
-            kuvaus = request.form["kuvaus"]
-            kesto = request.form["kesto"]
+            title = request.form["title"]
+            description = request.form["description"]
+            length = request.form["length"]
             genre = request.form["genre"]
-            ohjaaja = request.form["ohjaaja"]
-            kasikirjoittaja = request.form["kasikirjoittaja"]
-            manager.visible_film_update(film_id, nimi, kuvaus, kesto, genre, ohjaaja, kasikirjoittaja)
-            return redirect("/elokuvat")
-            #if manager.visible_film_update(film_id, nimi, kuvaus, kesto, genre, ohjaaja, kasikirjoittaja):
-                #return redirect("/elokuvat")
-            #else:
-                #flash("Muokkaus epäonnistui.", "error")
-                #return redirect(url_for('visible', film_id=film_id))
+            director = request.form["director"]
+            writer = request.form["writer"]
+            manager.visible_film_update(film_id, title, description, length, genre, director, writer)
+            return redirect("/films")
     else:
         return render_template("/invalid.html", message="Ei oikeutta toimintoon")
 
@@ -190,55 +159,48 @@ def visible(film_id):
 
 @app.route("/poll/<int:id>")
 def poll(id):
-    sql = text("SELECT nimi FROM elokuvat WHERE id=:id")
+    sql = text("SELECT title FROM films WHERE id=:id")
     result = db.session.execute(sql, {"id":id})
-    nimi = result.fetchone()[0]
-    return render_template("poll.html", id=id, nimi=nimi)
+    title = result.fetchone()[0]
+    return render_template("poll.html", id=id, title=title)
 
 @app.route("/answer", methods=["POST"])
 def answer():
-    elokuvat_id = request.form["id"]
+    films_id = request.form["id"]
     if "answer" in request.form:
         rating = request.form["answer"]
         message = request.form["message"]
-        sql2 = text("INSERT INTO ratings (elokuvat_id, rating, message, sent_at) VALUES (:elokuvat_id, :rating, :message, NOW())")
-        db.session.execute(sql2, {"rating":rating, "elokuvat_id":elokuvat_id, "message":message})
+        sql2 = text("INSERT INTO ratings (films_id, rating, message, sent_at) VALUES (:films_id, :rating, :message, NOW())")
+        db.session.execute(sql2, {"rating":rating, "films_id":films_id, "message":message})
         db.session.commit()
-    return redirect("/result/" + str(elokuvat_id))
+    return redirect("/result/" + str(films_id))
 
 @app.route("/result/<int:id>")
 def result(id):
     #leffan tiedot
-    #sql = text("SELECT nimi, kuvaus, kesto, genre, ohjaaja, kasikirjoittaja FROM elokuvat WHERE id=:id")
-    #result = db.session.execute(sql, {"id":id})
-    #information = result.fetchone()
     information = manager.get_film(id)
     #näytettävät tiedot
     visible = manager.get_visible(id)
     #keskiarvo
-    sql = text("SELECT CAST(AVG((rating)) AS Decimal (10,2)) FROM ratings WHERE elokuvat_id=:elokuvat_id")
-    result = db.session.execute(sql, {"elokuvat_id":id})
+    sql = text("SELECT CAST(AVG((rating)) AS Decimal (10,2)) FROM ratings WHERE films_id=:films_id")
+    result = db.session.execute(sql, {"films_id":id})
     average = result.fetchone()[0]
     #arvosanat ja kommentit
-    sql = text("SELECT id, rating, message FROM ratings WHERE elokuvat_id=:elokuvat_id")
-    result = db.session.execute(sql, {"elokuvat_id":id})
+    sql = text("SELECT id, rating, message FROM ratings WHERE films_id=:films_id")
+    result = db.session.execute(sql, {"films_id":id})
     ratings = result.fetchall()
-
     return render_template("result.html", visible=visible, average=average, ratings=ratings, information=information)
 
 
+@app.route("/search")
+def search():
+    return render_template("search.html")
 
-
-
-@app.route("/haku")
-def haku():
-    return render_template("haku.html")
-
-@app.route("/hakutulos", methods=["GET"])
-def hakutulos():
+@app.route("/searchresult", methods=["GET"])
+def searchresult():
     query = request.args["query"]
-    sql = text("SELECT * FROM elokuvat WHERE nimi ILIKE :query OR kuvaus ILIKE :query OR kesto ILIKE :query OR genre ILIKE :query OR ohjaaja ILIKE :query OR kasikirjoittaja ILIKE :query")
+    sql = text("SELECT * FROM films WHERE title ILIKE :query OR description ILIKE :query OR length ILIKE :query OR genre ILIKE :query OR director ILIKE :query OR writer ILIKE :query")
     result = db.session.execute(sql, {"query":"%"+query+"%"})
-    elokuvat = result.fetchall()
-    return render_template("hakutulos.html", elokuvat=elokuvat)
+    films = result.fetchall()
+    return render_template("searchresult.html", films=films)
 

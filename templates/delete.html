@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-{% if session.username %}
+{% if session.user_id %}
 
 
 <form action="/delete" method="post">
@@ -8,7 +8,7 @@
 <p>Minkä elokuvan haluat poistaa?</p>
 
 {% for film in list %}
-<input type="radio" name="film" value="{{ film.id }}"> {{ film.nimi }} <br>
+<input type="radio" name="film" value="{{ film.id }}"> {{ film.title }} <br>
 {% endfor %}
 
 <p>
