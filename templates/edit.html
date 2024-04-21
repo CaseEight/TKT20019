@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
+{% if session.username %}
+
 
 <h1>Muokkaa elokuvaa</h1>
 
@@ -8,7 +10,7 @@
     <input type="text" id="nimi" name="nimi" value="{{ film.nimi }}"><br>
     
     <label for="Kuvaus">Kuvaus:</label><br>
-    <textarea id="kuvaus" name="kuvaus">{{ film.kuvaus }}</textarea><br>
+    <input type="text" id="kuvaus" name="kuvaus" value="{{ film.kuvaus }}"><br>
     
     <label for="kesto">Kesto:</label><br>
     <input type="text" id="kesto" name="kesto" value="{{ film.kesto }}"><br>
@@ -21,8 +23,14 @@
 
     <label for="kasikirjoittaja">Käskirjoittaja:</label><br>
     <input type="text" id="kasikirjoittaja" name="kasikirjoittaja" value="{{ film.kasikirjoittaja }}"><br>
-
+    <br>
     <input type="submit" value="Tallenna muutokset">
 </form>
+
+{% else %}
+<p>Et ole kirjautunut sisään.</p>
+<a href="/">Palaa kirjautumiseen</a> |
+{% endif %}
+
 
 {% endblock %}

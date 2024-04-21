@@ -10,7 +10,9 @@ def user_id():
 
 def is_admin():
     id = user_id()
-    sql = text("SELECT isAdmin FROM users WHERE id=:id")
-    result = db.session.execute(sql, {"id":id})
-    return result.fetchone()[0]
-    #return render_template("invalid.html", error="Ei oikeutta toimintoon")
+    if id != 0:
+        sql = text("SELECT isAdmin FROM users WHERE id=:id")
+        result = db.session.execute(sql, {"id":id})
+        return result.fetchone()[0]
+    else:
+        return False

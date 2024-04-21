@@ -33,7 +33,10 @@ def new_user():
     if password1 == "" or password2 == "":
         return render_template("invalid.html", message="Salasanakenttä on tyhjä")
     hash_value = generate_password_hash(password1)
-    isadmin = request.form["isadmin"]
+    try:
+        isadmin = request.form["isadmin"]
+    except:
+        return render_template("invalid.html", message="Valitse käyttäjän tyyppi")
     sql = text("INSERT INTO users (username, password, isadmin) VALUES (:username, :password, :isAdmin)")
     db.session.execute(sql, {"username":username, "password":hash_value, "isAdmin":isadmin})
     db.session.commit()
@@ -109,6 +112,10 @@ def create():
                             "kasikirjoittaja":kasikirjoittaja
                             })
     db.session.commit()
+    sql = text("SELECT id FROM elokuvat WHERE nimi=:nimi")
+    result = db.session.execute(sql, {"nimi":nimi})
+    film_id = result.fetchone()[0]
+    manager.all_visible_film_info(film_id)
     return redirect("/elokuvat")
 
 
@@ -143,20 +150,41 @@ def edit_film_route(film_id):
         film = manager.get_film(film_id) 
         return render_template("edit.html", film=film, film_id=film_id)
     elif request.method == "POST":
-        #käsittelee muokkauslomakkeen tiedot ja tallentaa muutokset db
         nimi = request.form.get("nimi")
         kuvaus = request.form.get("kuvaus")
         kesto = request.form.get("kesto")
         genre = request.form.get("genre")
         ohjaaja = request.form.get("ohjaaja")
         kasikirjoittaja = request.form.get("kasikirjoittaja")
-        if manager.edit_film(film_id, nimi, kuvaus, kesto, genre, ohjaaja, kasikirjoittaja): #None -> ei muokata luontiaikaa
+        if manager.edit_film(film_id, nimi, kuvaus, kesto, genre, ohjaaja, kasikirjoittaja):
             return redirect(url_for('elokuvat')) 
         else:
-            #virheenkäsittely tarvittaessa
             flash("Muokkaus epäonnistui.", "error")
             return redirect(url_for('edit_film', film_id=film_id))
     return render_template("elokuvat.html")
+
+@app.route("/visible/<int:film_id>", methods=["GET", "POST"])
+def visible(film_id):
+    if users.is_admin():
+        if request.method == "GET":
+            film = manager.get_visible(film_id)
+            return render_template("visible.html", film=film, film_id=film_id)
+        elif request.method == "POST":
+            nimi = request.form["nimi"]
+            kuvaus = request.form["kuvaus"]
+            kesto = request.form["kesto"]
+            genre = request.form["genre"]
+            ohjaaja = request.form["ohjaaja"]
+            kasikirjoittaja = request.form["kasikirjoittaja"]
+            manager.visible_film_update(film_id, nimi, kuvaus, kesto, genre, ohjaaja, kasikirjoittaja)
+            return redirect("/elokuvat")
+            #if manager.visible_film_update(film_id, nimi, kuvaus, kesto, genre, ohjaaja, kasikirjoittaja):
+                #return redirect("/elokuvat")
+            #else:
+                #flash("Muokkaus epäonnistui.", "error")
+                #return redirect(url_for('visible', film_id=film_id))
+    else:
+        return render_template("/invalid.html", message="Ei oikeutta toimintoon")
 
 
 
@@ -181,19 +209,25 @@ def answer():
 @app.route("/result/<int:id>")
 def result(id):
     #leffan tiedot
-    sql = text("SELECT nimi, kuvaus, kesto, genre, ohjaaja, kasikirjoittaja FROM elokuvat WHERE id=:id")
-    result = db.session.execute(sql, {"id":id})
-    information = result.fetchone()
+    #sql = text("SELECT nimi, kuvaus, kesto, genre, ohjaaja, kasikirjoittaja FROM elokuvat WHERE id=:id")
+    #result = db.session.execute(sql, {"id":id})
+    #information = result.fetchone()
+    information = manager.get_film(id)
+    #näytettävät tiedot
+    visible = manager.get_visible(id)
     #keskiarvo
     sql = text("SELECT CAST(AVG((rating)) AS Decimal (10,2)) FROM ratings WHERE elokuvat_id=:elokuvat_id")
     result = db.session.execute(sql, {"elokuvat_id":id})
     average = result.fetchone()[0]
     #arvosanat ja kommentit
-    sql2 = text("SELECT id, rating, message FROM ratings WHERE elokuvat_id=:elokuvat_id")
-    result = db.session.execute(sql2, {"elokuvat_id":id})
+    sql = text("SELECT id, rating, message FROM ratings WHERE elokuvat_id=:elokuvat_id")
+    result = db.session.execute(sql, {"elokuvat_id":id})
     ratings = result.fetchall()
 
-    return render_template("result.html", nimi=information.nimi, kuvaus=information.kuvaus, kesto=information.kesto, genre=information.genre, ohjaaja=information.ohjaaja, kasikirjoittaja=information.kasikirjoittaja, average=average, ratings=ratings)
+    return render_template("result.html", visible=visible, average=average, ratings=ratings, information=information)
+
+
+
 
 
 @app.route("/haku")

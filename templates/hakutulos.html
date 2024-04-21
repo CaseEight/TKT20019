@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+{% if session.username %}
 
 <hr>
 <ul>
@@ -13,5 +14,12 @@
 <li>Käsikirjoittaja:{{ elokuva.kasikirjoittaja }}</li>
 <hr>
 {% endfor %}
+
+{% else %}
+<p>Et ole kirjautunut sisään.</p>
+<a href="/">Palaa kirjautumiseen</a> |
+{% endif %}
+
+
 
 {% endblock %}

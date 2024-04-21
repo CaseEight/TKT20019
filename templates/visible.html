@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<form method="POST" action="/visible/{{film_id}}">
+    <p>Elokuva<br>
+    <input type="radio" id="yes" name="nimi" value="True" checked>
+    <label for="yes">Kyllä</label><br>
+    <input type="radio" id="no" name="nimi" value="False" >
+    <label for="no">Ei</label><br></p>
+
+    <p>Kuvaus<br>
+    <input type="radio" id="yes" name="kuvaus" value="True" checked>
+    <label for="yes">Kyllä</label><br>
+    <input type="radio" id="no" name="kuvaus" value="False">
+    <label for="no">Ei</label><br></p>
+
+    <p>Kesto<br>
+    <input type="radio" id="yes" name="kesto" value="True" checked>
+    <label for="yes">Kyllä</label><br>
+    <input type="radio" id="no" name="kesto" value="False">
+    <label for="no">Ei</label><br></p>
+
+    <p>Genre<br>
+    <input type="radio" id="yes" name="genre" value="True" checked>
+    <label for="yes">Kyllä</label><br>
+    <input type="radio" id="no" name="genre" value="False">
+    <label for="no">Ei</label><br></p>
+
+    <p>Ohjaaja<br>
+    <input type="radio" id="yes" name="ohjaaja" value="True" checked>
+    <label for="yes">Kyllä</label><br>
+    <input type="radio" id="no" name="ohjaaja" value="False">
+    <label for="no">Ei</label><br></p>
+
+    <p>Käskirjoittaja<br>
+    <input type="radio" id="yes" name="kasikirjoittaja" value="True" checked>
+    <label for="yes">Kyllä</label><br>
+    <input type="radio" id="no" name="kasikirjoittaja" value="False">
+    <label for="no">Ei</label><br></p>
+
+    <input type="submit" value="Päivitä">
+</form>
+
+
+{% endblock %}
