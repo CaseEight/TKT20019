@@ -32,6 +32,7 @@ Keskiarvosana: {{average}} <br>
 <input type="submit" value="Poista arvostelu">
 <input type="hidden" name="id" value="{{ rating.id }}">
 <input type="hidden" name="film_id" value="{{ rating.id }}">
+<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 <p>
 <hr>

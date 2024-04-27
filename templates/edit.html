@@ -25,6 +25,7 @@
     <input type="text" id="writer" name="writer" value="{{ film.writer }}"><br>
     <br>
     <input type="submit" value="Tallenna muutokset">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 
 {% else %}
