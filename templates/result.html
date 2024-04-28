@@ -21,7 +21,9 @@
     Käskirjoittaja: {{ information.writer }} <br>
 {% endif %}
 Keskiarvosana: {{average}} <br>
-
+Ryhmät: {% for group in groups %}
+        <li>{{ group.group_name }} </li>
+        {% endfor %}
 <hr>
 {% for rating in ratings %}
 <i>Arvosana:</i> {{ rating.rating }}

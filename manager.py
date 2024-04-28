@@ -74,3 +74,37 @@ def visible_film_update(film_id, title, description, length, genre, director, wr
                             "writer":writer
                             })
     db.session.commit()
+
+def get_group_list():
+    sql = text("SELECT id, group_name FROM groups ORDER BY group_name DESC")
+    result = db.session.execute(sql)
+    return result.fetchall()
+
+def create_group(group_name):
+    sql = text("INSERT INTO groups (group_name) VALUES (:group_name)")
+    db.session.execute(sql, {"group_name": group_name})
+    db.session.commit()
+
+def get_groups(film_id):
+    sql = text( "SELECT Groups.group_name " \
+                "FROM Groups " \
+                "JOIN groups_films ON Groups.id = groups_films.group_id " \
+                "WHERE groups_films.film_id = :film_id;"
+               )
+    result = db.session.execute(sql, {"film_id": film_id})
+    groups = result.fetchall()
+    return groups
+
+
+def add_film_to_group(group_id, film_id):
+    #sql code prevents adding duplicates
+    sql = text("INSERT INTO groups_films (group_id, film_id) " 
+               "SELECT :group_id, :film_id " \
+               "WHERE NOT EXISTS ( " \
+                "SELECT 1 " \
+                "FROM Groups_films " \
+                "WHERE group_id = :group_id " \
+                "AND film_id = :film_id)")
+    db.session.execute(sql, {"group_id": group_id, "film_id":film_id})
+    db.session.commit()
+

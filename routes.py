@@ -162,8 +162,6 @@ def visible(film_id):
     else:
         return render_template("/invalid.html", message="Ei oikeutta toimintoon")
 
-
-
 @app.route("/poll/<int:id>")
 def poll(id):
     sql = text("SELECT title FROM films WHERE id=:id")
@@ -197,7 +195,9 @@ def result(id):
     sql = text("SELECT id, rating, message FROM ratings WHERE films_id=:films_id")
     result = db.session.execute(sql, {"films_id":id})
     ratings = result.fetchall()
-    return render_template("result.html", visible=visible, average=average, ratings=ratings, information=information)
+    #groups
+    groups = manager.get_groups(id)
+    return render_template("result.html", visible=visible, average=average, ratings=ratings, information=information, groups=groups)
 
 
 @app.route("/search")
@@ -212,3 +212,35 @@ def searchresult():
     films = result.fetchall()
     return render_template("searchresult.html", films=films)
 
+@app.route("/new_group")
+def new_group():
+    if users.is_admin():
+        return render_template("new_group.html")
+    else:
+        return render_template("/invalid.html", message="Ei oikeutta toimintoon")
+
+@app.route("/create_group", methods=["POST"])
+def create_group():
+    group_name = request.form["group_name"]
+    users.check_csrf()
+    manager.create_group(group_name)
+    return redirect("/films")
+
+@app.route("/add_to_group/<int:film_id>", methods=["GET", "POST"])
+def add_to_group_route(film_id):
+    if users.is_admin():
+        if request.method == "GET":
+            film = manager.get_film(film_id) 
+            groups = manager.get_group_list()
+            if not groups:
+                return render_template("/invalid.html", message="Ei ryhmiä")
+            return render_template("add_to_group.html", list=groups, film=film, film_id=film_id)
+        if request.method == "POST":
+            if "group_id" in request.form:
+                group_id = request.form["group_id"]
+                users.check_csrf()
+                manager.add_film_to_group(group_id, film_id)
+                return redirect("/films")
+    else:
+        return render_template("/invalid.html", message="Ei oikeutta toimintoon")
+        

@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+{% if session.user_id %}
+
+
+<form method="POST" action="/add_to_group/{{ film_id }}">
+
+<p>Mihin ryhmään elokuva lisätään?</p>
+
+{% for group in list %}
+<input type="radio" name="group_id" value="{{ group.id }}"> {{ group.group_name }} <br>
+{% endfor %}
+
+<p>
+<input type="submit" value="Lisää">
+<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+</form>
+
+<p>
+<a href="/">Palaa takaisin</a>
+
+{% else %}
+<p>Et ole kirjautunut sisään.</p>
+<a href="/">Palaa kirjautumiseen</a> |
+{% endif %}
+
+{% endblock %}
