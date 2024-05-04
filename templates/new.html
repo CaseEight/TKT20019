@@ -3,20 +3,20 @@
 {% if session.user_id %}
 
 <form action="/create" method="POST">
-<p>Elokuva:<br>
-<input type="text" name="title"></p>
-<p>Kuvaus:<br>
-<input type="text" name="description"></p>
-<p>Kesto:<br>
-<input type="text" name="length"></p>
-<p>Genre:<br>
-<input type="text" name="genre"></p>
-<p>Ohjaaja:<br>
-<input type="text" name="director"></p>
-<p>Käsikirjoittaja:<br>
-<input type="text" name="writer"></p>
-<input type="submit" value="Lisää elokuva">
-<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <label for="title">Elokuva:</label>
+    <input type="text" name="title">
+    <label for="description">Kuvaus:</label>
+    <input type="text" name="description">
+    <label for="length">Kesto:</label>
+    <input type="text" name="length">
+    <label for="genre">Genre:</label>
+    <input type="text" name="genre">
+    <label for="director">Ohjaaja:</label>
+    <input type="text" name="director">
+    <label for="writer">Käsikirjoittaja:</label>
+    <input type="text" name="writer">
+    <input type="submit" value="Lisää elokuva">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 
 {% else %}

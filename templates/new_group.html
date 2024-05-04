@@ -3,10 +3,10 @@
 {% if session.user_id %}
 
 <form action="/create_group" method="POST">
-<p>Ryhmän nimi:<br>
-<input type="text" name="group_name"></p>
-<input type="submit" value="Lisää ryhmä">
-<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <label for="group_name">Ryhmän nimi:</label>
+    <input type="text" name="group_name">
+    <input type="submit" value="Lisää ryhmä">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 
 {% else %}

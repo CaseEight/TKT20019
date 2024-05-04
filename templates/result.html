@@ -30,12 +30,12 @@ Ryhmät: {% for group in groups %}
 <p>
 <i>Arvostelu:</i> {{ rating.message }}
 <p>
-<form action="/delete_rating" method="post">
-<input type="submit" value="Poista arvostelu">
-<input type="hidden" name="id" value="{{ rating.id }}">
-<input type="hidden" name="film_id" value="{{ rating.id }}">
-<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-</form>
+<form2 action="/delete_rating" method="post">
+    <input type="submit" value="Poista arvostelu">
+    <input type="hidden" name="id" value="{{ rating.id }}">
+    <input type="hidden" name="film_id" value="{{ rating.id }}">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+</form2>
 <p>
 <hr>
 {% endfor %}

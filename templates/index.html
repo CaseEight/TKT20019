@@ -13,11 +13,11 @@
 {% else %}
 <p>Et ole kirjautunut sisään.</p>
 <form action="/login" method="POST">
-<p>Tunnus:<br>
-<input type="text" name="username"></p>
-<p>Salasana:<br>
-<input type="password" name="password"></p>
-<input type="submit" value="Kirjaudu">
+    <label for="username">Tunnus:</label>
+    <input type="text" name="username">
+    <label for="password">Salasana:</label>
+    <input type="password" name="password">
+    <input type="submit" value="Kirjaudu">
 </form>
 {% endif %}
 {% endblock %}

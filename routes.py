@@ -23,7 +23,25 @@ def admin():
 @app.route("/new_user", methods=["POST"])
 def new_user():
     try:
-        users.new_user()
+        username = request.form["username"]
+        if len(username) < 1:
+            return render_template("invalid.html", message="Tunnuskenttä tyhjä")
+        elif len(username) > 16:
+            return render_template("invalid.html", message="Tunnuksessa voi olla korkeintaan 16 merkkiä")
+        password1 = request.form["password1"]
+        password2 = request.form["password2"]
+        if password1 != password2:
+            return render_template("invalid.html", message="Salasanat eroavat toisistaan")
+        if password1 == "" or password2 == "":
+            return render_template("invalid.html", message="Salasanakenttä on tyhjä")
+        hash_value = generate_password_hash(password1)
+        try:
+            isadmin = request.form["isadmin"]
+        except:
+            return render_template("invalid.html", message="Valitse käyttäjän tyyppi")
+        sql = text("INSERT INTO users (username, password, isadmin) VALUES (:username, :password, :isAdmin)")
+        db.session.execute(sql, {"username":username, "password":hash_value, "isAdmin":isadmin})
+        db.session.commit()
         return render_template("index.html")
     except:
         return render_template("invalid.html", message="Käyttäjän luonti ei onnistu")

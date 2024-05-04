@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<form method="POST" action="/visible/{{film_id}}">
+<form2 method="POST" action="/visible/{{film_id}}">
     <p>Elokuva<br>
     <input type="radio" id="yes" name="title" value="True" checked>
     <label for="yes">Kyllä</label><br>
@@ -40,7 +40,7 @@
 
     <input type="submit" value="Päivitä">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-</form>
+</form2>
 
 
 {% endblock %}
