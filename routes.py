@@ -44,7 +44,7 @@ def new_user():
         db.session.commit()
         return render_template("index.html")
     except:
-        return render_template("invalid.html", message="Käyttäjän luonti ei onnistu")
+        return render_template("invalid.html", message="Käyttäjän luonti ei onnistu. Yritä uudelleen.")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -87,7 +87,7 @@ def new():
     if users.is_admin():
         return render_template("new.html")
     else:
-        return render_template("/invalid.html", message="Ei oikeutta toimintoon")
+        return render_template("/invalid.html", message="Ei oikeutta toimintoon. Kirjaudu ylläpitäjänä.")
 
 @app.route("/create", methods=["POST"])
 def create():
@@ -127,7 +127,7 @@ def delete_film_route():
                 manager.delete_film(film)
             return redirect("/films")
     else:
-        return render_template("/invalid.html", message="Ei oikeutta toimintoon")
+        return render_template("/invalid.html", message="Ei oikeutta toimintoon. Kirjaudu ylläpitäjänä.")
 
 
 @app.route("/delete_rating", methods=["POST"])
@@ -138,7 +138,7 @@ def delete_rating_route():
         film_id = manager.delete_rating(rating_id)
         return redirect("/result/" + str(film_id))
     else:
-        return render_template("/invalid.html", message="Ei oikeutta toimintoon")
+        return render_template("/invalid.html", message="Ei oikeutta toimintoon. Kirjaudu ylläpitäjänä.")
 
 @app.route("/edit/<int:film_id>", methods=["GET", "POST"])
 def edit_film_route(film_id):
@@ -176,7 +176,7 @@ def visible(film_id):
             manager.visible_film_update(film_id, title, description, length, genre, director, writer)
             return redirect("/films")
     else:
-        return render_template("/invalid.html", message="Ei oikeutta toimintoon")
+        return render_template("/invalid.html", message="Ei oikeutta toimintoon. Kirjaudu ylläpitäjänä.")
 
 @app.route("/poll/<int:id>")
 def poll(id):
@@ -233,7 +233,7 @@ def new_group():
     if users.is_admin():
         return render_template("new_group.html")
     else:
-        return render_template("/invalid.html", message="Ei oikeutta toimintoon")
+        return render_template("/invalid.html", message="Ei oikeutta toimintoon. Kirjaudu ylläpitäjänä.")
 
 @app.route("/create_group", methods=["POST"])
 def create_group():
@@ -258,5 +258,5 @@ def add_to_group_route(film_id):
                 manager.add_film_to_group(group_id, film_id)
                 return redirect("/films")
     else:
-        return render_template("/invalid.html", message="Ei oikeutta toimintoon")
+        return render_template("/invalid.html", message="Ei oikeutta toimintoon. Kirjaudu ylläpitäjänä.")
         
