@@ -42,6 +42,21 @@ Tilanne 21.4.2024
 8. Ylläpitäjä voi luoda ryhmiä, joihin elokuvia voi luokitella. Elokuva voi kuulua yhteen tai useampaan ryhmään.
     Ryhmät viel toteuttamatta. Tämä vaatii yhden taulukon lisää.
 
+
+Tilanne 5.5.2024
+1. Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
+2. Käyttäjä näkee elokuvat listana ja voi painaa elokuvasta, jolloin siitä näytetään lisää tietoa (kuten kuvaus, kesto, genre, ohjaaja, käsikirjoittaja jne.).
+3. Käyttäjä voi antaa arvion (arvosana 1-5 ja kommentti) elokuvasta ja lukea muiden antamia arvioita.
+4. Käyttäjä voi etsiä kaikki elokuvat, joiden kuvauksessa (tai metatiedoissa) on annettu sana.
+5. Käyttäjä näkee myös listan, jossa elokuvat on järjestetty parhaimmasta huonoimpaan arvioiden mukaisesti. Elokuvat oletuksena arvosanan mukaan. Kärjessä elokuvat ilman arvosteluita.
+6. Ylläpitäjä voi lisätä ja poistaa elokuvia sekä määrittää elokuvasta näytettävät tiedot.
+7. Ylläpitäjä voi tarvittaessa poistaa käyttäjän antaman arvion.
+8. Ylläpitäjä voi luoda ryhmiä, joihin elokuvia voi luokitella. Elokuva voi kuulua yhteen tai useampaan ryhmään. (Ei toteutettu ryhmän tai ryhmistä poistamista)
+
+
+    
+
+
 Keskeisiä muita korjauksia annettuihin kommentteihin nähden:
 
 Koodi korjattu englannin kiellelle kokonaan
