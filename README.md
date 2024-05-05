@@ -42,6 +42,13 @@ Tilanne 21.4.2024
 8. Ylläpitäjä voi luoda ryhmiä, joihin elokuvia voi luokitella. Elokuva voi kuulua yhteen tai useampaan ryhmään.
     Ryhmät viel toteuttamatta. Tämä vaatii yhden taulukon lisää.
 
+Keskeisiä muita korjauksia annettuihin kommentteihin nähden:
+
+Koodi korjattu englannin kiellelle kokonaan
+Jaettu yhdestä app.py useampaan tiedostoon
+Committeja tehty useammin
+Virheet näytetään samalla sivulla
+Navigointipalkki lisätty
 
 Tilanne 5.5.2024
 1. Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
@@ -57,13 +64,6 @@ Tilanne 5.5.2024
     
 
 
-Keskeisiä muita korjauksia annettuihin kommentteihin nähden:
-
-Koodi korjattu englannin kiellelle kokonaan
-Jaettu yhdestä app.py useampaan tiedostoon
-Committeja tehty useammin
-Virheet näytetään samalla sivulla
-Navigointipalkki lisätty
 
 
 Käynnistysohjeet:
