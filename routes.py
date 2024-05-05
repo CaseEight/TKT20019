@@ -71,7 +71,6 @@ def invalid():
 @app.route("/films")
 def films():
     try:
-        #sql = text("SELECT id, title, created_at FROM films ORDER BY id DESC")
         sql = text("SELECT F.id, title, CAST(AVG((rating)) AS Decimal (10,2)) AS average " \
             "FROM films F LEFT JOIN ratings R " \
             "ON F.id = R.films_id " \
@@ -157,8 +156,7 @@ def edit_film_route(film_id):
         if manager.edit_film(film_id, title, description, length, genre, director, writer):
             return redirect(url_for('films')) 
         else:
-            flash("Muokkaus epäonnistui.", "error")
-            return redirect(url_for('edit_film', film_id=film_id))
+            return render_template("/invalid.html", message="Muokkaus epäonnistuis")
     return render_template("films.html")
 
 @app.route("/visible/<int:film_id>", methods=["GET", "POST"])

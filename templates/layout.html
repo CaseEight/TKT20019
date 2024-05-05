@@ -13,17 +13,19 @@
     </div>
     <nav>
         <ul>
-            {% if session.username %}
             <li><a href="/">Etusivu</a></li>
+            <li><a href="/admin">Luo uusi tunnus</a></li>
+            {% if session.username %}
             <li><a href="/films">Elokuvat</a></li>
             <li><a href="/new">Lisää elokuva</a></li>
             <li><a href="/delete">Poista elokuva</a></li>
             <li><a href="/new_group">Lisää ryhmä</a></li>
             <li><a href="/search">Haku</a></li>
+            <p>Olet kirjautunut nimellä {{ session.username }}</p>
+            <a href="/logout">Kirjaudu ulos</a>
             {% else %}
             <p>Et ole kirjautunut sisään. Luo uusi tunnus tai kirjaudu sisään.</p>
             {% endif %}
-            <li><a href="/admin">Luo uusi tunnus</a></li>
         </ul>
     </nav>
     <hr>

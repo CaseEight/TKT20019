@@ -4,14 +4,12 @@
 
 
 {% if session.user_id %}
-<p>Olet kirjautunut nimellä {{ session.username }}</p>
-<a href="/logout">Kirjaudu ulos</a>
+<h2>Tervetuloa käyttämään elokuvasovellusta {{ session.username }}</h2>
 <hr>
 
 
 
 {% else %}
-<p>Et ole kirjautunut sisään.</p>
 <form action="/login" method="POST">
     <label for="username">Tunnus:</label>
     <input type="text" name="username">
