@@ -1,6 +1,5 @@
-from db import db
+from db import db # db import
 from sqlalchemy.sql import text
-#import users
 
 def get_film_list():
     sql = text("SELECT id, title, description FROM films ORDER BY title DESC")
@@ -8,6 +7,7 @@ def get_film_list():
     return result.fetchall()
 
 def get_film(film_id):
+    # gets details of the film from the films table
     sql = text("SELECT * FROM films WHERE id=:film_id")
     result = db.session.execute(sql, {"film_id": film_id})
     film = result.fetchone()
@@ -45,7 +45,7 @@ def edit_film(film_id, title, description, length, genre, director, writer):
         return True
     except:
         return False
-    
+
 def all_visible_film_info(film_id):
     truth = text("True")
     sql = text("INSERT INTO film_visible (titleVisible, descriptionVisible, lengthVisible, genreVisible, directorVisible, writerVisible, created_atVisible, films_id) VALUES (TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, :films_id) RETURNING id")
@@ -98,7 +98,7 @@ def get_groups(film_id):
 
 def add_film_to_group(group_id, film_id):
     #sql code prevents adding duplicates
-    sql = text("INSERT INTO groups_films (group_id, film_id) " 
+    sql = text("INSERT INTO groups_films (group_id, film_id) "
                "SELECT :group_id, :film_id " \
                "WHERE NOT EXISTS ( " \
                 "SELECT 1 " \
@@ -107,4 +107,3 @@ def add_film_to_group(group_id, film_id):
                 "AND film_id = :film_id)")
     db.session.execute(sql, {"group_id": group_id, "film_id":film_id})
     db.session.commit()
-

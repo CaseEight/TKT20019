@@ -92,6 +92,8 @@ def new():
 @app.route("/create", methods=["POST"])
 def create():
     title = request.form["title"]
+    if not title:
+        return render_template("/invalid.html", message="Elokuvalla on oltava vähintään nimi. Yritä uudelleen")
     description = request.form["description"]
     length = request.form["length"]
     genre = request.form["genre"]
@@ -190,6 +192,8 @@ def answer():
     films_id = request.form["id"]
     if "answer" in request.form:
         rating = request.form["answer"]
+        if not rating:
+            return render_template("/invalid.html", message="Elokuvalle on annettava arviossa arvosana. Yritä uudelleen.")
         message = request.form["message"]
         users.check_csrf()
         sql2 = text("INSERT INTO ratings (films_id, rating, message, sent_at) VALUES (:films_id, :rating, :message, NOW())")
@@ -238,6 +242,10 @@ def new_group():
 @app.route("/create_group", methods=["POST"])
 def create_group():
     group_name = request.form["group_name"]
+    if not group_name:
+        return render_template("/invalid.html", message="Ryhmällä on oltava nimi. Yritä uudelleen")
+    if len(group_name) > 42:
+        return render_template("/invalid.html", message="Ryhmän nimi saa olla korkeintaan 42 merkkiä pitkä. Yritä uudelleen")
     users.check_csrf()
     manager.create_group(group_name)
     return redirect("/films")
