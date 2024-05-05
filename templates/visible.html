@@ -1,46 +1,64 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<form2 method="POST" action="/visible/{{film_id}}">
-    <p>Elokuva<br>
-    <input type="radio" id="yes" name="title" value="True" checked>
-    <label for="yes">Kyllä</label><br>
-    <input type="radio" id="no" name="title" value="False" >
-    <label for="no">Ei</label><br></p>
+<form method="POST" action="/visible/{{film_id}}">
+    <p>Elokuvan nimi<br>
+    <input type="radio" id="title_yes" name="title" value="True" checked>
+    <label for="title_yes">Kyllä</label><br>
+    <input type="radio" id="title_no" name="title" value="False">
+    <label for="title_no">Ei</label><br></p>
+    <br>
+    <br>
+    <br>
 
     <p>Kuvaus<br>
-    <input type="radio" id="yes" name="description" value="True" checked>
-    <label for="yes">Kyllä</label><br>
-    <input type="radio" id="no" name="description" value="False">
-    <label for="no">Ei</label><br></p>
+    <input type="radio" id="description_yes" name="description" value="True" checked>
+    <label for="description_yes">Kyllä</label><br>
+    <input type="radio" id="description_no" name="description" value="False">
+    <label for="description_no">Ei</label><br></p>
+    <br>
+    <br>
+    <br>
 
     <p>Kesto<br>
-    <input type="radio" id="yes" name="length" value="True" checked>
-    <label for="yes">Kyllä</label><br>
-    <input type="radio" id="no" name="length" value="False">
-    <label for="no">Ei</label><br></p>
+    <input type="radio" id="length_yes" name="length" value="True" checked>
+    <label for="length_yes">Kyllä</label><br>
+    <input type="radio" id="length_no" name="length" value="False">
+    <label for="length_no">Ei</label><br></p>
+    <br>
+    <br>
+    <br>
 
     <p>Genre<br>
-    <input type="radio" id="yes" name="genre" value="True" checked>
-    <label for="yes">Kyllä</label><br>
-    <input type="radio" id="no" name="genre" value="False">
-    <label for="no">Ei</label><br></p>
+    <input type="radio" id="genre_yes" name="genre" value="True" checked>
+    <label for="genre_yes">Kyllä</label><br>
+    <input type="radio" id="genre_no" name="genre" value="False">
+    <label for="genre_no">Ei</label><br></p>
+    <br>
+    <br>
+    <br>
 
     <p>Ohjaaja<br>
-    <input type="radio" id="yes" name="director" value="True" checked>
-    <label for="yes">Kyllä</label><br>
-    <input type="radio" id="no" name="director" value="False">
-    <label for="no">Ei</label><br></p>
+    <input type="radio" id="director_yes" name="director" value="True" checked>
+    <label for="director_yes">Kyllä</label><br>
+    <input type="radio" id="director_no" name="director" value="False">
+    <label for="director_no">Ei</label><br></p>
+    <br>
+    <br>
+    <br>
 
-    <p>Käskirjoittaja<br>
-    <input type="radio" id="yes" name="writer" value="True" checked>
-    <label for="yes">Kyllä</label><br>
-    <input type="radio" id="no" name="writer" value="False">
-    <label for="no">Ei</label><br></p>
+    <p>Käsikirjoittaja<br>
+    <input type="radio" id="writer_yes" name="writer" value="True" checked>
+    <label for="writer_yes">Kyllä</label><br>
+    <input type="radio" id="writer_no" name="writer" value="False">
+    <label for="writer_no">Ei</label><br></p>
+    <br>
+    <br>
+    <br>
 
     <input type="submit" value="Päivitä">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-</form2>
+</form>
 
 
 {% endblock %}

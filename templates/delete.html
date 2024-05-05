@@ -3,20 +3,20 @@
 {% if session.user_id %}
 
 
-<form2 action="/delete" method="post">
 
-    <p>Minkä elokuvan haluat poistaa?</p>
-
+<p>Minkä elokuvan haluat poistaa?</p>
+<form action="/delete" method="post">
+    
     {% for film in list %}
-    <input type="radio" name="film" value="{{ film.id }}"> {{ film.title }} <br>
+    <input type="radio" id="film" name="film" value="{{ film.id }}">
+    <label for="film">{{ film.title }}</label>
     {% endfor %}
-
-    <p>
+    
     <input type="submit" value="Poista">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-</form2>
+</form>
 
-<p>
+
 <a href="/">Palaa takaisin</a>
 
 {% else %}
